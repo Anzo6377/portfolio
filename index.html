@@ -129,6 +129,7 @@
             outline: none;
             font-size: 1.1rem; font-weight: 600;
             display: flex; justify-content: space-between; align-items: center;
+            margin-top: 10px;
         }
         .accordion-btn:hover { background-color: #2d3b4e; }
         .active { background-color: #2d3b4e; border-left: 4px solid var(--blue); }
@@ -146,7 +147,7 @@
         }
         
         .panel-content { padding: 1.5rem 0; color: var(--text-muted); }
-        .tag { background: rgba(59, 130, 246, 0.15); color: var(--blue); padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; margin-right: 5px; }
+        .tag { background: rgba(59, 130, 246, 0.15); color: var(--blue); padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; margin-right: 5px; display: inline-block; margin-bottom: 5px; }
 
         /* --- MOBILE --- */
         @media (max-width: 768px) {
@@ -164,7 +165,8 @@
             <ul>
                 <li><a href="#about">Infos</a></li>
                 <li><a href="#skills">Compétences</a></li>
-                <li><a href="#projects">Projets TP</a></li>
+                <li><a href="#e5">E5</a></li>
+                <li><a href="#e6">E6</a></li>
             </ul>
         </nav>
         <button id="contactBtn" class="btn-contact">Me Contacter</button>
@@ -181,10 +183,12 @@
         <p>Étudiant en BTS SIO option SISR à Ynov Campus. Expérimenté en support utilisateur et passionné par la cybersécurité et l'infrastructure.</p>
         
         <div style="display: flex; gap: 15px; margin-top: 1rem; flex-wrap: wrap;">
-            <a href="#projects" class="btn-contact" style="display:inline-flex; align-items:center; text-decoration: none;">
-                Voir mes TP
+            <a href="#e5" class="btn-contact" style="display:inline-flex; align-items:center; text-decoration: none;">
+                Voir mes TP E5
             </a>
-            
+            <a href="#e6" class="btn-contact" style="display:inline-flex; align-items:center; text-decoration: none;">
+                Voir mes TP E6
+            </a>
             <a href="CV_Ichem_Aissani.pdf" download="CV_Ichem_Aissani.pdf" class="btn-contact btn-outline" style="display:inline-flex; align-items:center; text-decoration: none;">
                 <i class="fas fa-download" style="margin-right: 8px;"></i> Télécharger mon CV
             </a>
@@ -251,8 +255,8 @@
         </div>
     </section>
 
-    <section id="projects">
-        <h2>Mes Travaux Pratiques</h2>
+    <section id="e5">
+        <h2>Mes Travaux Pratiques - E5</h2>
 
         <button class="accordion-btn">
             <span>Architecture Haute Disponibilité (Load Balancer)</span>
@@ -354,7 +358,6 @@
             </div>
         </div>
 
-        <!-- NOUVEAU TP : ACTIVE DIRECTORY -->
         <button class="accordion-btn">
             <span>Administration et Centralisation Active Directory (Lab 3 machines)</span>
             <i class="fas fa-chevron-down"></i>
@@ -377,7 +380,6 @@
             </div>
         </div>
 
-        <!-- NOUVEAU TP : GLPI -->
         <button class="accordion-btn">
             <span>Gestion de Parc Informatique et Support Utilisateur (GLPI)</span>
             <i class="fas fa-chevron-down"></i>
@@ -400,27 +402,105 @@
             </div>
         </div>
 
-        <!-- NOUVEAU TP : PENTEST / AUDIT -->
+    </section>
+
+    <!-- NOUVELLE SECTION E6 -->
+    <section id="e6">
+        <h2>Mes Travaux Pratiques - E6</h2>
+
         <button class="accordion-btn">
-            <span>Audit de Sécurité, Test d'Intrusion et Analyse de Risques</span>
+            <span>Conception et Sécurisation d'Infrastructure Multi-Sites (CCNA)</span>
             <i class="fas fa-chevron-down"></i>
         </button>
         <div class="panel">
             <div class="panel-content">
                 <div style="margin-bottom:10px;">
-                    <span class="tag">Pentest (Boîte Noire)</span> <span class="tag">Metasploit</span> <span class="tag">Critères DICT</span> <span class="tag">EBIOS / RGPD</span>
+                    <span class="tag">Packet Tracer</span> <span class="tag">OSPF</span> <span class="tag">VLAN</span> <span class="tag">ACL</span> <span class="tag">NAT/PAT</span>
                 </div>
-                <p><strong>Objectif :</strong> Évaluer les vulnérabilités critiques d'un serveur Linux exposé, simuler une compromission complète et structurer un rapport de risques réglementaire et technique.</p>
+                <p><strong>Objectif :</strong> Concevoir un réseau segmenté, sécurisé et évolutif pour le siège de l'entreprise TechCorp et ses deux agences distantes[cite: 2].</p>
                 <br>
                 <ul>
-                    <li>• Réalisation d'une phase de reconnaissance externe et d'évaluation en mode "boîte noire", sans connaissances préalables du système ciblé.</li>
-                    <li>• Détection et exploitation d'une vulnérabilité critique historique (porte dérobée d'origine) présente sur le logiciel de transfert de fichiers vsftpd 2.3.4.</li>
-                    <li>• Élévation de privilèges immédiate permettant d'obtenir un accès d'administration totale ("root") avec les pleins pouvoirs d'exécution sur le serveur.</li>
-                    <li>• Évaluation de l'impact métier réel d'une telle intrusion selon la grille de critères fondamentaux DICT (Disponibilité, Intégrité, Confidentialité, Traçabilité).</li>
-                    <li>• Analyse démontrant le risque critique de sabotage (perte de disponibilité), d'altération des données (perte d'intégrité) et d'effacement des journaux de logs (perte de traçabilité).</li>
-                    <li>• Étude de conformité légale alignée sur les exigences du RGPD, mettant en lumière le risque financier lié aux négligences de maintenance et l'obligation légale de notifier la CNIL sous 72 heures en cas de violation réelle.</li>
-                    <li>• Synthèse stratégique des scénarios de menaces en s'appuyant sur l'approche formelle EBIOS pour guider la gouvernance et orienter la prise de décision.</li>
-                    <li>• Formulation de recommandations et remédiations concrètes : désactivation immédiate du composant obsolète, planification de mise à niveau logicielle et déploiement de mécanismes de surveillance d'accès.</li>
+                    <li>• Mise en place d'une segmentation avec des VLAN et configuration du routage inter-VLAN sur un switch couche 3[cite: 2, 4].</li>
+                    <li>• Implémentation du routage dynamique OSPF entre les sites[cite: 4].</li>
+                    <li>• Déploiement d'un service DHCP pour chaque VLAN et accès Internet via NAT/PAT[cite: 4, 5].</li>
+                    <li>• Application de mécanismes de cybersécurité : accès distant SSH, Port Security, DHCP Snooping et ACL[cite: 5].</li>
+                </ul>
+            </div>
+        </div>
+
+        <button class="accordion-btn">
+            <span>Segmentation VLSM et Sécurité par ACL</span>
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="panel">
+            <div class="panel-content">
+                <div style="margin-bottom:10px;">
+                    <span class="tag">VLSM</span> <span class="tag">Routage Statique</span> <span class="tag">ACL étendues</span>
+                </div>
+                <p><strong>Objectif :</strong> Interconnexion de 3 sites d'une entreprise avec segmentation, routage statique et sécurisation[cite: 7].</p>
+                <br>
+                <ul>
+                    <li>• Élaboration du plan d'adressage IP optimisé avec la méthode VLSM pour les services Admin, Compta et Technique[cite: 7].</li>
+                    <li>• Configuration du routage statique multi-routeurs pour joindre tous les réseaux[cite: 7, 8].</li>
+                    <li>• Implémentation de règles de filtrage avec des ACL étendues complexes pour interdire ou autoriser des flux spécifiques entre les départements[cite: 7, 8].</li>
+                </ul>
+            </div>
+        </div>
+
+        <button class="accordion-btn">
+            <span>VLAN, Trunking 802.1Q et Routage Inter-VLAN (Cas Solivia)</span>
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="panel">
+            <div class="panel-content">
+                <div style="margin-bottom:10px;">
+                    <span class="tag">VLAN</span> <span class="tag">Trunk 802.1Q</span> <span class="tag">Router-on-a-Stick</span>
+                </div>
+                <p><strong>Objectif :</strong> Configuration d'un extrait réaliste du réseau de l'entreprise Solivia avec routage centralisé[cite: 10].</p>
+                <br>
+                <ul>
+                    <li>• Création de VLAN sur un switch Cisco et affectation des ports en mode access pour les postes clients[cite: 10].</li>
+                    <li>• Configuration d'un lien trunk 802.1Q avec un VLAN natif dédié pour des raisons de sécurité[cite: 10].</li>
+                    <li>• Déploiement du routage inter-VLAN via la méthode router-on-a-stick à l'aide de sous-interfaces sur le routeur[cite: 10].</li>
+                </ul>
+            </div>
+        </div>
+
+        <button class="accordion-btn">
+            <span>Création d'une Campus Area Network (CAN)</span>
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="panel">
+            <div class="panel-content">
+                <div style="margin-bottom:10px;">
+                    <span class="tag">CAN</span> <span class="tag">Routage</span> <span class="tag">Packet Tracer</span>
+                </div>
+                <p><strong>Objectif :</strong> Déploiement d'une architecture réseau interconnectant les deux bâtiments de la PME TechSolutions[cite: 11].</p>
+                <br>
+                <ul>
+                    <li>• Déploiement de l'architecture physique multi-bâtiments incluant des routeurs, des switches et des postes clients[cite: 11].</li>
+                    <li>• Configuration des interfaces avec le plan d'adressage IP défini[cite: 12].</li>
+                    <li>• Vérification de la connectivité interne entre les bâtiments et de l'accès à un cloud Internet[cite: 12].</li>
+                </ul>
+            </div>
+        </div>
+
+        <button class="accordion-btn">
+            <span>Architecture Réseau PME, Adressage VLSM et Analyse Wireshark</span>
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="panel">
+            <div class="panel-content">
+                <div style="margin-bottom:10px;">
+                    <span class="tag">Architecture</span> <span class="tag">VLSM</span> <span class="tag">Wireshark</span> <span class="tag">Dépannage</span>
+                </div>
+                <p><strong>Objectif :</strong> Conception d'une infrastructure fiable et segmentée pour la PME TechnoPrint[cite: 14].</p>
+                <br>
+                <ul>
+                    <li>• Calcul de sous-réseaux (VLSM) pour répartir les adresses IP entre les différents services (Administration, Production, Commercial, Serveurs)[cite: 14, 15].</li>
+                    <li>• Élaboration du schéma logique de l'architecture réseau incluant routeur, firewall et switches[cite: 15].</li>
+                    <li>• Analyse du trafic réseau avec l'outil Wireshark (requêtes ARP, handshake TCP)[cite: 16].</li>
+                    <li>• Diagnostic et correction d'incidents réseau sur les postes de travail liés à l'adressage[cite: 16, 17].</li>
                 </ul>
             </div>
         </div>
