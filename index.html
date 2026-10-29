@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Ichem Aissani</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- DESIGN GÉNÉRAL --- */
+        :root {
+            --bg-color: #0f172a;      
+            --card-bg: #1e293b;       
+            --text-main: #f8fafc;     
+            --text-muted: #94a3b8;    
+            --blue: #3b82f6;          
+            --blue-dark: #2563eb;     
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        
+        body { background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        html { scroll-behavior: smooth; }
+
+        /* --- BARRE DE NAVIGATION --- */
+        header {
+            position: fixed; top: 0; width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            padding: 1rem 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid #334155;
+            z-index: 1000;
+        }
+        .logo { font-weight: 700; font-size: 1.5rem; color: var(--blue); }
+        nav ul { display: flex; gap: 20px; }
+        nav a:hover { color: var(--blue); }
+        
+        .btn-contact {
+            background: var(--blue); padding: 0.5rem 1rem;
+            border-radius: 5px; font-weight: 600; transition: 0.3s;
+            border: none; color: white; cursor: pointer; font-size: 1rem;
+        }
+        .btn-contact:hover { background: var(--blue-dark); }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--blue);
+            color: var(--blue);
+        }
+        .btn-outline:hover {
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        /* --- BULLE DE CONTACT --- */
+        .contact-bubble {
+            visibility: hidden;
+            opacity: 0;
+            position: fixed;
+            top: 80px; 
+            right: 5%;
+            background: var(--card-bg);
+            border: 1px solid var(--blue);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+            z-index: 1001;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .contact-bubble.show {
+            visibility: visible;
+            opacity: 1;
+        }
+        .contact-bubble p {
+            color: var(--text-main);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+        }
+        .contact-bubble p:last-child {
+            margin-bottom: 0;
+        }
+        .contact-bubble i {
+            color: var(--blue);
+            font-size: 1.2rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* --- ACCUEIL (HERO) --- */
+        .hero {
+            height: 100vh;
+            display: flex; flex-direction: column; justify-content: center;
+            padding: 0 10%;
+        }
+        .hero h1 { font-size: 3rem; line-height: 1.2; margin-bottom: 1rem; }
+        .hero span { color: var(--blue); }
+        .hero p { color: var(--text-muted); max-width: 600px; margin-bottom: 2rem; font-size: 1.1rem; }
+
+        /* --- SECTIONS --- */
+        section { padding: 4rem 10%; }
+        h2 { font-size: 2rem; margin-bottom: 2rem; border-left: 5px solid var(--blue); padding-left: 15px; }
+        
+        /* --- GRILLES --- */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        
+        .card {
+            background: var(--card-bg); padding: 2rem;
+            border-radius: 8px; border: 1px solid #334155;
+            transition: transform 0.3s;
+        }
+        .card:hover { transform: translateY(-5px); border-color: var(--blue); }
+        .card h3 { margin-bottom: 1rem; color: var(--text-main); display: flex; align-items: center; gap: 10px; }
+        .card i { color: var(--blue); }
+        .card li { margin-bottom: 0.5rem; color: var(--text-muted); }
+
+        /* --- ACCORDÉON (TP) --- */
+        .accordion-btn {
+            background-color: var(--card-bg);
+            color: var(--text-main);
+            cursor: pointer;
+            padding: 1.5rem;
+            width: 100%;
+            text-align: left;
+            border: none; border-bottom: 1px solid #334155;
+            outline: none;
+            font-size: 1.1rem; font-weight: 600;
+            display: flex; justify-content: space-between; align-items: center;
+            margin-top: 10px;
+        }
+        .accordion-btn:hover { background-color: #2d3b4e; }
+        .active { background-color: #2d3b4e; border-left: 4px solid var(--blue); }
+        .accordion-btn i { transition: transform 0.3s; }
+        .active i { transform: rotate(180deg); }
+
+        .panel {
+            padding: 0 1.5rem;
+            background-color: var(--bg-color);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            border-left: 1px solid #334155;
+            border-right: 1px solid #334155;
+        }
+        
+        .panel-content { padding: 1.5rem 0; color: var(--text-muted); }
+        .tag { background: rgba(59, 130, 246, 0.15); color: var(--blue); padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; margin-right: 5px; display: inline-block; margin-bottom: 5px; }
+
+        /* --- MOBILE --- */
+        @media (max-width: 768px) {
+            nav { display: none; } 
+            .hero h1 { font-size: 2rem; }
+            section { padding: 3rem 5%; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">Ichem.AISSANI</div>
+        <nav>
+            <ul>
+                <li><a href="#about">Infos</a></li>
+                <li><a href="#skills">Compétences</a></li>
+                <li><a href="#e5">E5</a></li>
+                <li><a href="#e6">E6</a></li>
+                <li><a href="#veille">Veille</a></li>
+            </ul>
+        </nav>
+        <button id="contactBtn" class="btn-contact">Me Contacter</button>
+    </header>
+
+    <div id="contactBubble" class="contact-bubble">
+        <p><i class="fas fa-envelope"></i>i.aissani2006@gmail.com</p>
+        <p><i class="fas fa-phone"></i>06.26.46.31.10</p>
+    </div>
+
+    <section class="hero">
+        <p>Bonjour, je suis</p>
+        <h1>Ichem Aissani<br><span>Administrateur Systèmes & Réseaux</span></h1>
+        <p>Étudiant en BTS SIO option SISR à Ynov Campus. Expérimenté en support utilisateur et passionné par la cybersécurité et l'infrastructure.</p>
+        
+        <div style="display: flex; gap: 15px; margin-top: 1rem; flex-wrap: wrap;">
+            <a href="#e5" class="btn-contact" style="display:inline-flex; align-items:center; text-decoration: none;">
+                Voir mes TP E5
+            </a>
+            <a href="#e6" class="btn-contact" style="display:inline-flex; align-items:center; text-decoration: none;">
+                Voir mes TP E6
+            </a>
+            <a href="#veille" class="btn-contact btn-outline" style="display:inline-flex; align-items:center; text-decoration: none;">
+                Ma Veille
+            </a>
+            <a href="CV_Ichem_Aissani.pdf" download="CV_Ichem_Aissani.pdf" class="btn-contact btn-outline" style="display:inline-flex; align-items:center; text-decoration: none;">
+                <i class="fas fa-download" style="margin-right: 8px;"></i> Télécharger mon CV
+            </a>
+        </div>
+    </section>
+
+    <section id="about">
+        <h2>Mon Profil</h2>
+        <div class="grid">
+            <div class="card">
+                <h3><i class="fas fa-graduation-cap"></i> Formation</h3>
+                <p style="color:white; font-weight:bold;">BTS SIO Option SISR</p>
+                <p>Ynov Campus (2025 à ce jour)</p>
+                <br>
+                <p style="color:white; font-weight:bold;">École 42</p>
+                <p>Bootcamp de langage C </p>
+                <br>
+                <p style="color:white; font-weight:bold;">Baccalauréat Général avec mention assez bien</p>
+                <p>Lycée Honoré de Balzac (2021 - 2024)</p>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-briefcase"></i> Expérience Professionelle</h3>
+                <p style="color:white; font-weight:bold;">Technicien Support & Réseaux</p>
+                <p>Mairie</p>
+                <ul style="margin-top:10px;">
+                    <li>• Gestion du réseau municipal</li>
+                    <li>• Ticketing via Clarilog</li>
+                    <li>• Support via TeamViewer/AnyDesk</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills">
+        <h2>Compétences Techniques</h2>
+        <div class="grid">
+            <div class="card">
+                <h3><i class="fab fa-linux"></i> Systèmes</h3>
+                <ul>
+                    <li>Windows 10/11</li>
+                    <li>Linux (Ubuntu et Kali)</li>
+                    <li>Gestion Utilisateurs & Groupes</li>
+                    <li>Droits NTFS / chmod</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-network-wired"></i> Réseaux & Sécurité</h3>
+                <ul>
+                    <li>Cisco Packet Tracer</li>
+                    <li>Stormshield (SN210, VPN)</li>
+                    <li>DNS, DHCP, Apache</li>
+                    <li>Load Balancing (HAProxy)</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3><i class="fas fa-tools"></i> Outils</h3>
+                <ul>
+                    <li>VMware / VirtualBox</li>
+                    <li>Clarilog (Ticketing)</li>
+                    <li>AnyDesk / TeamViewer</li>
+                    <li>VS Code/Vim</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="e5">
+        <h2>Mes Travaux Pratiques - E5</h2>
+
+        <button class="accordion-btn">
+            <span>Architecture Haute Disponibilité (Load Balancer)</span>
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="panel">
+            <div class="panel-content">
+                <div style="margin-bottom:10px;">
+                    <span class="tag">Linux</span> <span class="tag">HAProxy</span> <span class="tag">Apache</span> <span class="tag">UFW</span>
+                </div>
+                <p><strong>Objectif :</strong> Assurer la continuité de service d'un site web même en cas de panne serveur.</p>
+                <br>
+                <ul>
+                    <li>• Déploiement de 2 serveurs Web Apache (Backends).</li>
+                    <li>• Configuration du répartiteur de charge <strong>HAProxy</strong> en mode Round-Robin.</li>
+                    <li>• Sécurisation des ports avec le pare-feu <strong>UFW</strong> (ports 22 et 80).</li>
+                    <li>• Simulation de pannes (vérification du "check" HAProxy) et validation du basculement automatique de la charge.</li>
+                </ul>
+            </div>
+        </div>
+
+        <button class="accordion-btn">
+            <span>Gestion Avancée des Utilisateurs et Droits Linux</span>
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="panel">
+            <div class="panel-content">
+                <div style="margin-bottom:10px;">
+                    <span class="tag">Bash</span> <span class="tag">Permissions</span> <span class="tag">Sudoers</span> <span class="tag">ACL</span>
+                </div>
+                <p><strong>Objectif :</strong> Créer une architecture multi-utilisateurs sécurisée pour une entreprise fictive (Dev, Marketing, Support, Direction).</p>
+                <br>
+                <ul>
+                    <li>• Création et organisation des groupes et utilisateurs systèmes.</li>
+                    <li>• Mise en place du <strong>Sticky Bit</strong> sur les dossiers partagés du support.</li>
+                    <li>• Utilisation du <strong>SetGID</strong> pour forcer l'héritage de groupe dans les dossiers collaboratifs.</li>
+                    <li>• Configuration du fichier <code>/etc/sudoers</code> via <code>visudo</code> pour déléguer des privilèges spécifiques.</li>
+                </ul>
+            </div>
+        </div>
+
+        <button class="accordion-btn">
+            <span>Gestion des Fichiers et Arborescence Linux</span>
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="panel">
+            <div class="panel-content">
+                <div style="margin-bottom:10px;">
+                    <span class="tag">Commandes Linux</span> <span class="tag">Chmod</span> <span class="tag">Umask</span>
+                </div>
+                <p><strong>Objectif :</strong> Maîtriser la manipulation des fichiers, l'arborescence et les permissions numériques sous Linux.</p>
+                <br>
+                <ul>
+                    <li>• Création d'arborescence complexe en ligne de commande (<code>mkdir -p</code>, <code>tree</code>).</li>
+                    <li>• Manipulation de contenu (<code>cat</code>, <code>echo</code>, <code>less</code>).</li>
+                    <li>• Application des permissions absolues (chmod 777, 751, 640) et gestion de l'<strong>Umask</strong>.</li>
+                    <li>• Identification des failles de sécurité liées au bit <strong>SetUID</strong> sur les binaires root.</li>
+                </ul>
+            </div>
+        </div>
+
+        <button class="accordion-btn">
+            <span>Déploiement Services Web & DNS</span>
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="panel">
+            <div class="panel-content">
+                <div style="margin-bottom:10px;">
+                    <span class="tag">DNS</span> <span class="tag">Apache2</span> <span class="tag">VMware</span>
+                </div>
+                <p><strong>Objectif :</strong> Déployer des services réseau (DNS et Web) sur des machines virtuelles et les faire communiquer.</p>
+                <br>
+                <ul>
+                    <li>• Déploiement des serveurs sur des <strong>Machines Virtuelles (VMware)</strong> séparées par rôle.</li>
+                    <li>• Configuration du réseau interne VMware pour la communication entre les différentes VM.</li>
+                    <li>• Configuration des zones DNS (Directe/Inverse) pour traduire les URL en IP locales.</li>
+                    <li>• Manipulation de l'arborescence web (<code>/var/www/html</code>).</li>
+                    <li>• Tests de résolution et de connectivité via la commande <code>nslookup</code> et le navigateur.</li>
+                </ul>
+            </div>
+        </div>
+
+        <button class="accordion-btn">
+            <span>Projet Stormshield (VPN IPSec)</span>
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="panel">
+            <div class="panel-content">
+                <div style="margin-bottom:10px;">
+                    <span class="tag">En cours</span> <span class="tag">Stormshield SN210</span> <span class="tag">VPN</span>
+                </div>
+                <p><strong>Projet actuel :</strong> Configuration complète d'un boîtier de sécurité physique.</p>
+                <br>
+                <ul>
+                    <li>• Configuration des interfaces réseaux et routage.</li>
+                    <li>• Mise en place d'un tunnel <strong>VPN IPSec</strong> pour accès distant sécurisé.</li>
+                    <li>• Filtrage et règles de firewalling.</li>
+                </ul>
+            </div>
+        </div>
+
+        <button class="accordion-btn">
+            <span>Administration et Centralisation Active Directory (Lab 3 machines)</span>
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="panel">
+            <div class="panel-content">
+                <div style="margin-bottom:10px;">
+                    <span class="tag">Windows Server</span> <span class="tag">Active Directory</span> <span class="tag">GPO</span> <span class="tag">DNS</span>
+                </div>
+                <p><strong>Objectif :</strong> Mettre en place une gestion centralisée des utilisateurs et des ressources réseau pour basculer une infrastructure de groupe de travail (workgroup) vers un domaine sécurisé.</p>
+                <br>
+                <ul>
+                    <li>• Déploiement d'un Contrôleur de Domaine Windows Server (SRV-DC01) et configuration complète des services AD DS et du rôle DNS indispensable.</li>
+                    <li>• Structuration de l'Active Directory via la création d'Unités Organisationnelles logiques (Utilisateurs, Ordinateurs, Groupes).</li>
+                    <li>• Provisionnement des comptes utilisateurs métiers (Direction, RH, Développement) avec politique de changement obligatoire du mot de passe à la première connexion.</li>
+                    <li>• Configuration d'un serveur de fichiers dédié (SRV-FILE01) avec un partage réseau sécurisé restreint aux utilisateurs habilités du domaine.</li>
+                    <li>• Jonction et configuration réseau des postes clients Windows 10/11 au domaine technova.local.</li>
+                    <li>• Création et application de stratégies de groupe (GPO) de sécurité : exigence de complexité et de longueur des mots de passe, verrouillage automatique des sessions après 10 minutes d'inactivité et uniformisation du fond d'écran.</li>
+                </ul>
+            </div>
+        </div>
+
+        <button class="accordion-btn">
+            <span>Gestion de Parc Informatique et Support Utilisateur (GLPI)</span>
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="panel">
+            <div class="panel-content">
+                <div style="margin-bottom:10px;">
+                    <span class="tag">Ubuntu Server</span> <span class="tag">LAMP</span> <span class="tag">GLPI</span> <span class="tag">Gestion de Parc / ITIL</span>
+                </div>
+                <p><strong>Objectif :</strong> Installer, configurer et administrer une solution open-source d'inventaire de parc et de helpdesk (ticketing) dans un environnement client-serveur de test.</p>
+                <br>
+                <ul>
+                    <li>• Installation et mise à jour d'une distribution Linux Ubuntu Server virtuelle dédiée à l'hébergement de l'application.</li>
+                    <li>• Déploiement d'une pile logicielle Web et Base de données (serveur HTTP Apache2, SGBD MariaDB et modules d'extensions PHP indispensables).</li>
+                    <li>• Création et sécurisation de la base de données relationnelle dédiée à GLPI avec isolation et attribution de privilèges stricts à un utilisateur local.</li>
+                    <li>• Téléchargement, déploiement et configuration des droits d'accès sur l'arborescence système d'Apache (www-data) pour finaliser l'installation réseau.</li>
+                    <li>• Déploiement croisé d'un agent d'inventaire GLPI sur une machine cliente isolée pour tester la remontée automatique de l'inventaire matériel et logiciel.</li>
+                    <li>• Simulation complète d'actions de helpdesk selon les bonnes pratiques : création d'utilisateurs, ouverture de tickets d'incidents et assignation aux profils techniciens.</li>
+                </ul>
+            </div>
+        </div>
+
+    </section>
+
+    <section id="e6">
+        <h2>Mes Travaux Pratiques - E6</h2>
+
+        <button class="accordion-btn">
+            <span>Conception et Sécurisation d'Infrastructure Multi-Sites (CCNA)</span>
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="panel">
+            <div class="panel-content">
+                <div style="margin-bottom:10px;">
+                    <span class="tag">Packet Tracer</span> <span class="tag">OSPF</span> <span class="tag">VLAN</span> <span class="tag">ACL</span> <span class="tag">NAT/PAT</span>
+                </div>
+                <p><strong>Objectif :</strong> Concevoir un réseau segmenté, sécurisé et évolutif pour le siège de l'entreprise TechCorp et ses deux agences distantes.</p>
+                <br>
+                <ul>
+                    <li>• Mise en place d'une segmentation avec des VLAN et configuration du routage inter-VLAN sur un switch couche 3.</li>
+                    <li>• Implémentation du routage dynamique OSPF entre les sites.</li>
+                    <li>• Déploiement d'un service DHCP pour chaque VLAN et accès Internet via NAT/PAT.</li>
+                    <li>• Application de mécanismes de cybersécurité : accès distant SSH, Port Security, DHCP Snooping et ACL.</li>
+                </ul>
+            </div>
+        </div>
+
+        <button class="accordion-btn">
+            <span>Segmentation VLSM et Sécurité par ACL</span>
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="panel">
+            <div class="panel-content">
+                <div style="margin-bottom:10px;">
+                    <span class="tag">VLSM</span> <span class="tag">Routage Statique</span> <span class="tag">ACL étendues</span>
+                </div>
+                <p><strong>Objectif :</strong> Interconnexion de 3 sites d'une entreprise avec segmentation, routage statique et sécurisation.</p>
+                <br>
+                <ul>
+                    <li>• Élaboration du plan d'adressage IP optimisé avec la méthode VLSM pour les services Admin, Compta et Technique.</li>
+                    <li>• Configuration du routage statique multi-routeurs pour joindre tous les réseaux.</li>
+                    <li>• Implémentation de règles de filtrage avec des ACL étendues complexes pour interdire ou autoriser des flux spécifiques entre les départements.</li>
+                </ul>
+            </div>
+        </div>
+
+        <button class="accordion-btn">
+            <span>VLAN, Trunking 802.1Q et Routage Inter-VLAN (Cas Solivia)</span>
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="panel">
+            <div class="panel-content">
+                <div style="margin-bottom:10px;">
+                    <span class="tag">VLAN</span> <span class="tag">Trunk 802.1Q</span> <span class="tag">Router-on-a-Stick</span>
+                </div>
+                <p><strong>Objectif :</strong> Configuration d'un extrait réaliste du réseau de l'entreprise Solivia avec routage centralisé.</p>
+                <br>
+                <ul>
+                    <li>• Création de VLAN sur un switch Cisco et affectation des ports en mode access pour les postes clients.</li>
+                    <li>• Configuration d'un lien trunk 802.1Q avec un VLAN natif dédié pour des raisons de sécurité.</li>
+                    <li>• Déploiement du routage inter-VLAN via la méthode router-on-a-stick à l'aide de sous-interfaces sur le routeur.</li>
+                </ul>
+            </div>
+        </div>
+
+        <button class="accordion-btn">
+            <span>Création d'une Campus Area Network (CAN)</span>
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="panel">
+            <div class="panel-content">
+                <div style="margin-bottom:10px;">
+                    <span class="tag">CAN</span> <span class="tag">Routage</span> <span class="tag">Packet Tracer</span>
+                </div>
+                <p><strong>Objectif :</strong> Déploiement d'une architecture réseau interconnectant les deux bâtiments de la PME TechSolutions.</p>
+                <br>
+                <ul>
+                    <li>• Déploiement de l'architecture physique multi-bâtiments incluant des routeurs, des switches et des postes clients.</li>
+                    <li>• Configuration des interfaces avec le plan d'adressage IP défini.</li>
+                    <li>• Vérification de la connectivité interne entre les bâtiments et de l'accès à un cloud Internet.</li>
+                </ul>
+            </div>
+        </div>
+
+        <button class="accordion-btn">
+            <span>Architecture Réseau PME, Adressage VLSM et Analyse Wireshark</span>
+            <i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="panel">
+            <div class="panel-content">
+                <div style="margin-bottom:10px;">
+                    <span class="tag">Architecture</span> <span class="tag">VLSM</span> <span class="tag">Wireshark</span> <span class="tag">Dépannage</span>
+                </div>
+                <p><strong>Objectif :</strong> Conception d'une infrastructure fiable et segmentée pour la PME TechnoPrint.</p>
+                <br>
+                <ul>
+                    <li>• Calcul de sous-réseaux (VLSM) pour répartir les adresses IP entre les différents services (Administration, Production, Commercial, Serveurs).</li>
+                    <li>• Élaboration du schéma logique de l'architecture réseau incluant routeur, firewall et switches.</li>
+                    <li>• Analyse du trafic réseau avec l'outil Wireshark (requêtes ARP, handshake TCP).</li>
+                    <li>• Diagnostic et correction d'incidents réseau sur les postes de travail liés à l'adressage.</li>
+                </ul>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- SECTION VEILLE TECHNOLOGIQUE MINIMALISTE -->
+    <section id="veille">
+        <h2>Veille Technologique : Cybersécurité & IA</h2>
+        <p style="color: var(--text-muted); margin-bottom: 2rem;">
+            Suivi des vulnérabilités critiques et de l'apport de l'IA dans la sécurisation des infrastructures (Sources : <strong>CERT-FR, ANSSI, Feedly, The Hacker News</strong>).
+        </p>
+
+        <div class="grid">
+            <div class="card">
+                <h3><i class="fas fa-lock"></i> Failles SSL / TLS</h3>
+                <div style="margin-bottom:10px;">
+                    <span class="tag">Chiffrement</span> <span class="tag">OpenSSL</span> <span class="tag">TLS 1.3</span>
+                </div>
+                <ul>
+                    <li>• En exploitant ces faiblesses via une attaque de l'homme du milieu (Man-in-the-Middle), l'attaquant peut forcer un rétrogradage (downgrade), contourner le chiffrement ou dérober la clé privée du serveur. L'impact est critique : déchiffrement du trafic en temps réel, vol de données sensibles (identifiants, sessions, données bancaires) et usurpation d'identité, brisant totalement la confidentialité et l'intégrité des communications.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-terminal"></i> PHP 2 Shell (RCE)</h3>
+                <div style="margin-bottom:10px;">
+                    <span class="tag">Serveur Web</span> <span class="tag">Reverse Shell</span> <span class="tag">CVE</span>
+                </div>
+                <ul>
+                    <li>• La technique PHP2Shell consiste à transformer une exécution de code PHP arbitraire (upload d'un webshell, injection ou faille PHP-CGI) en un shell interactif complet sur le serveur hôte.
+                        En invoquant des fonctions système (exec, system, passthru) ou des sockets réseau (fsockopen), l'attaquant initie un reverse shell reliant l'interpréteur de commandes (/bin/sh ou cmd.exe) à sa propre machine. L'impact est critique : évasion du périmètre web, maintien d'accès, escalade de privilèges et contrôle total de l'infrastructure compromise.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-robot"></i> Zero-Day & IA</h3>
+                <div style="margin-bottom:10px;">
+                    <span class="tag">0-Day</span> <span class="tag">IA Défensive</span> <span class="tag">EDR</span>
+                </div>
+                <ul>
+                    <li>• Une faille Zero-Day désigne une vulnérabilité logicielle ou matérielle inconnue de l’éditeur, ou pour laquelle aucun correctif officiel n'a encore été publié.
+                        Exploitée avant toute remédiation (« zéro jour » pour réagir), elle contourne les défenses traditionnelles basées sur les signatures connues. L'attaquant dispose d'un avantage décisif pour s'infiltrer via un exploit inédit. L'impact est critique : compromission furtive et durable, cyberespionnage, vol massif de données ou déploiement de rançongiciels, laissant la cible sans parade directe jusqu’à la diffusion d'un patch.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer style="text-align:center; padding: 2rem; border-top: 1px solid #334155;">
+        <p style="color: var(--text-muted);">© 2026 Ichem Aissani - Portfolio BTS SIO</p>
+    </footer>
+
+    <script>
+        // SCRIPT POUR LA BULLE DE CONTACT
+        const contactBtn = document.getElementById('contactBtn');
+        const contactBubble = document.getElementById('contactBubble');
+
+        // Ouvrir/Fermer la bulle quand on clique sur le bouton
+        contactBtn.addEventListener('click', function(e) {
+            e.preventDefault(); 
+            e.stopPropagation(); // Empêche le clic de se propager au document
+            contactBubble.classList.toggle('show');
+        });
+
+        // Fermer la bulle si on clique n'importe où ailleurs sur la page
+        document.
